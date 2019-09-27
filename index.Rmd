@@ -1,0 +1,21 @@
+--- 
+title: "Customer Analytics in R"
+author: "? and Peer Christensen"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+cover-image:
+description: "This book is designed to be a ressource with useful R code for doing common customer analytics tasks."
+---
+---
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

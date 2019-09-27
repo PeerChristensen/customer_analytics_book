@@ -1,0 +1,14 @@
+# Customer Segmentation
+
+This is what code and plots can look like
+```{r warning=F,message=F}
+library(tidyverse)
+library(ggthemes)
+
+iris %>%
+  ggplot(aes(Sepal.Length,Sepal.Width, colour = Species)) +
+  geom_point(size = 3, alpha = .8) +
+  scale_colour_tableau() +
+  theme_minimal()
+  
+```

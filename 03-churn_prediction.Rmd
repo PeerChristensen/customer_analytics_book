@@ -1,0 +1,12 @@
+# Predicting Customer Churn
+
+Churn prediction is really a claasic binary classification task that falls within supervised machine learning.
+
+There are many R packages available that will do the job. Here we demonstrate how to use an autoML framework to accomplish the task. One might argue that autoML is unnecessarily advanced for our purposes, we decided to use it anyway, since tools such as the H2O framework makes this quite doable for people less experienced with machine learning.
+
+autoML with H2O has two main advantages:
+
+1. It does not require the user to perform hyperparameter tuning or balancing the data.
+2. Running autoML creates and evaluates many models using different algorithms and parameter settings, which whould ultimately lead to excellent performance in short time.
+
+For more details, check out the [docs](http://docs.h2o.ai/h2o/latest-stable/h2o-docs/automl.html)

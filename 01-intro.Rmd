@@ -1,0 +1,10 @@
+# Introduction {#intro}
+
+This book is designed to be a ressource with useful R code for doing common customer analytics tasks.
+
+It is aimed at...
+
+We will cover...
+
+We hope that...
+

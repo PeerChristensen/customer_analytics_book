@@ -1,0 +1,7 @@
+# Market basket analysis
+
+For companies trying to...., market basket analysis can be a powerful tool and is frequently used in customer analytics.
+
+Market basket analysis allows companies to identify which items are more likely to be bought together and therefore are bbetter candidates for cross-selling.
+
+
