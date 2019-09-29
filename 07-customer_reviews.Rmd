@@ -1,2 +1,5 @@
 # Opinion Mining and Customer Feedback
 
+Consumers review and rate just about anything that may be categorised as a product or service. This is of course often useful for other consumers when choosing how they want to spend their money. At the same time, businesses can use their customer feedback to improve the customer experience by identifying patterns in the reviews that describe weaknesses.
+
+Whether or not businesses are actively collecting customer reviews, they often get plenty of them and to the extent that it's impossible to read them all and summarise them in a clear way. In order to gain insights from large quantities of text, we can use text mining techniques for which a number of R packages will be useful.
