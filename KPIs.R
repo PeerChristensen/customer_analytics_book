@@ -4,7 +4,8 @@ library(tidyverse)
 library(readxl)
 
 df <- read_excel("Data/retail.xlsx") %>%
-  mutate(TotalAmount = Quantity * UnitPrice)
+  mutate(TotalAmount = Quantity * UnitPrice,
+         Month = lubridate::month(InvoiceDate))
 
 # n customers, n purchases
 n_distinct(df$CustomerID)
@@ -12,7 +13,7 @@ n_distinct(df$InvoiceNo)
 
 # monthly revenue
 df %>%
-  group_by(Month = lubridate::month(InvoiceDate)) %>%
+  group_by(Month) %>%
   summarise(Revenue =sum(TotalAmount)) %>%
   ggplot(aes(Month , Revenue)) +
   geom_col() +
@@ -24,9 +25,18 @@ df %>%
 # n new customers by month
 df %>%
   group_by(CustomerID) %>%
-  summarise(Month = min(lubridate::month(InvoiceDate))) %>%
-  count(Month) %>%
-  ggplot(aes(Month, n)) +
+  summarise(Min_month = min(Month)) %>%
+  count(Min_month) %>%
+  ggplot(aes(Min_month,n)) +
+  geom_col()
+
+# growth rate compating present with previous month
+df %>%
+  group_by(CustomerID) %>%
+  summarise(Min_month = min(Month)) %>%
+  count(Min_month) %>%
+  mutate(Growth_Rate = (n - lag(n))/ lag(n) * 100) %>%
+  ggplot(aes(Min_month,Growth_Rate)) +
   geom_col()
 
 # arpu
@@ -47,6 +57,7 @@ df %>%
   
 # Revenue per purchase (invoice)
 df %>%
+  group_by(Month) %>%
   summarise(mean = mean(TotalAmount),
             median = median(TotalAmount))
 
