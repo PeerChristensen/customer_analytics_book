@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(readxl)
+library(ggridges)
 
 df <- read_excel("Data/retail.xlsx") %>%
   mutate(TotalAmount = Quantity * UnitPrice,
@@ -30,7 +31,7 @@ df %>%
   ggplot(aes(Min_month,n)) +
   geom_col()
 
-# growth rate compating present with previous month
+# growth rate comparing present with previous month
 df %>%
   group_by(CustomerID) %>%
   summarise(Min_month = min(Month)) %>%
@@ -68,3 +69,27 @@ df %>%
          TotalAmount > mean - sd*2) %>%
   ggplot(aes(TotalAmount)) +
   geom_density()
+
+# avg order size
+df %>%
+  group_by(InvoiceNo) %>%
+  count() %>%
+  ungroup() %>%
+  summarise(mean = mean(n),
+            median = median(n))
+df %>%
+  group_by(Month,InvoiceNo) %>%
+  count() %>%
+  ungroup() %>%
+  group_by(Month) %>%
+  summarise(mean = mean(n),
+            median = median(n))
+
+df %>%
+  group_by(Month,InvoiceNo) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(Month = factor(Month, levels = rev(1:12))) %>%
+  filter(n<80) %>%
+  ggplot(aes(x=n,y=Month)) +
+  geom_density_ridges()

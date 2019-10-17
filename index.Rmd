@@ -1,21 +1,31 @@
 --- 
 title: "Customer Analytics in R"
-author: "? and Peer Christensen"
+author: '? and Peer Christensen'
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
+cover-image: null
+bibliography:
+- book.bib
+- packages.bib
+description: This book is designed to be a ressource with useful R code for doing
+  common customer analytics tasks.
 documentclass: book
-bibliography: [book.bib, packages.bib]
-biblio-style: apalike
 link-citations: yes
-cover-image:
-description: "This book is designed to be a ressource with useful R code for doing common customer analytics tasks."
+site: bookdown::bookdown_site
+biblio-style: apalike
+bookdown::gitbook:
+  config:
+    toc:
+      collapse: section
 ---
+
 ---
 
 
 ```{r include=FALSE}
-# automatically create a bib database for R packages
 knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
+
+knitr::opts_chunk$set(warning = F, error = F, message = F)
+```
 ```
