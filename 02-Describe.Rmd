@@ -1,0 +1,132 @@
+# Describe
+
+```{r include=FALSE}
+knitr::opts_chunk$set(warning = F, error = F, message = F, cache = F)
+```
+
+This chapter provides code for exploring characteristics of datasets and recipes for calculating and plotting simple descriptive statistics and *key performance indicators*, or KPIs, commonly used to keep track of business performance and customer relations.
+
+## Packages and data
+
+To run the code for this chapter, you will need to install and load the following packages.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(ggridges)
+library(lubridate)
+library(hrbrthemes)
+library(scales)
+
+# ggplot theme
+theme_set(theme_ipsum_rc())
+
+```
+
+The dataset consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We'll also create variables for the total amounts spent and month (1 to 12).
+
+```{r}
+df <- read_excel("Data/retail.xlsx") %>%
+  mutate(TotalAmount = Quantity * UnitPrice,
+         Month       = month(InvoiceDate))
+```
+
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+kable(df[1:4,],caption = "The data",format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "100%",height="400px")
+```
+
+## Exploratory analysis
+
+
+## Key performance indicators
+
+There are dozens of well-known KPIs commonly used to track various aspects of a company's performance and choosing the relevant metrics is essential to obtain meaningful results.
+The below examples demonstrate how to calculate and visualize information about sales and customers.
+
+First, we'll create a plot showing the total revenue for each month.
+
+```{r}
+df %>%
+  group_by(Month) %>%
+  summarise(Revenue =sum(TotalAmount)) %>%
+  ggplot(aes(factor(Month), Revenue)) +
+  geom_col() +
+  ggtitle("Revenue per month") +
+  scale_y_continuous(labels = function(n) {
+    trans = n / 1000
+    paste0(trans, "K")
+  })
+```
+
+We can then calculate the mean and median order size and amount spent per purchase in the following way.
+
+```{r}
+df %>%
+  group_by(InvoiceNo) %>%
+  count() %>%
+  ungroup() %>%
+  summarise(mean = mean(n),
+            median = median(n))
+
+df %>%
+  summarise(mean = mean(TotalAmount),
+            median = median(TotalAmount)) 
+```
+
+We may also want to know whether e.g. order sizes change over time. In this dataset, the per-month distributions look identical.
+
+```{r}
+df %>%
+  group_by(Month,InvoiceNo) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(Month = factor(Month, levels = rev(1:12))) %>%
+  filter(n<80) %>%
+  ggplot(aes(x=n,y=Month)) +
+  geom_density_ridges()
+```
+
+We can also calculate the revenue per customer to get an idea of how much one customer is worth to the company (in a one-year period).
+
+```{r}
+df %>% 
+  group_by(CustomerID) %>%
+  summarise(Revenue = sum(TotalAmount)) %>%
+  summarise(mean = mean(Revenue),
+            median = median(Revenue))
+```
+
+Acquiring new customers is important to any business, and we can measure performance in this area by looking at the number of new customers acquired in each month.
+
+```{r}
+df %>%
+  group_by(CustomerID) %>%
+  summarise(Min_month = min(Month)) %>%
+  mutate(Min_month = factor(Min_month,levels = 1:12)) %>%
+  count(Min_month) %>%
+  ggplot(aes(Min_month,n)) +
+  geom_col()
+```
+
+In addition, we may want to know the growth rate comparing the percentage of new customers for each month with previous months.
+
+```{r}
+df %>%
+  group_by(CustomerID) %>%
+  summarise(Min_month = min(Month)) %>%
+  mutate(Min_month = factor(Min_month,levels = 1:12)) %>%
+  count(Min_month) %>%
+  mutate(Growth_Rate = (n - lag(n)) / lag(n) * 100) %>%
+  ggplot(aes(Min_month,Growth_Rate)) +
+  geom_col() +
+  scale_y_continuous(labels = percent_format(scale=1))
+```
+
+# Retention and cohorts
+
+
+

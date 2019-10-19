@@ -54,11 +54,10 @@ df %>%
   summarise(mean = mean(Revenue),
             median = median(Revenue),
             n = n()) %>%
-  arrange(desc(median))
+  arrange(desc(n))
   
 # Revenue per purchase (invoice)
 df %>%
-  group_by(Month) %>%
   summarise(mean = mean(TotalAmount),
             median = median(TotalAmount))
 
@@ -77,6 +76,7 @@ df %>%
   ungroup() %>%
   summarise(mean = mean(n),
             median = median(n))
+
 df %>%
   group_by(Month,InvoiceNo) %>%
   count() %>%
