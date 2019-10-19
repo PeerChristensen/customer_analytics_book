@@ -6,8 +6,6 @@ knitr::opts_chunk$set(warning = F, error = F, message = F, cache = F)
 
 This chapter provides code for exploring characteristics of datasets and recipes for calculating and plotting simple descriptive statistics and *key performance indicators*, or KPIs, commonly used to keep track of business performance and customer relations.
 
-## Packages and data
-
 To run the code for this chapter, you will need to install and load the following packages.
 
 ```{r}
@@ -23,7 +21,7 @@ theme_set(theme_ipsum_rc())
 
 ```
 
-The dataset consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We'll also create variables for the total amounts spent and month (1 to 12).
+The dataset we'll be using to calculate KPIs consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We'll also create variables for the total amounts spent and month (1 to 12).
 
 ```{r}
 df <- read_excel("Data/retail.xlsx") %>%
@@ -34,7 +32,7 @@ df <- read_excel("Data/retail.xlsx") %>%
 ```{r echo = FALSE}
 library(knitr)
 library(kableExtra)
-kable(df[1:4,],caption = "The data",format = "html") %>%
+kable(df[1:4,],caption = "Online retail data",format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
   scroll_box(width = "100%",height="400px")
 ```
@@ -126,7 +124,126 @@ df %>%
   scale_y_continuous(labels = percent_format(scale=1))
 ```
 
-# Retention and cohorts
+## Retention and cohorts
 
+We have just examined the acquisition of new customers over time. Another important aspect of customer value is the retention rate, which we'll measure for customers acquired at different times. These groups are called cohorts.
 
+We'll use a large dataset from a mobile game where each "event" is a new player signing up or starting a game between April 27th and May 27 2016.
+
+```{r}
+cohorts <- read_csv("Data/game_data.csv")
+```
+
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+kable(cohorts[1:8,],caption = "Mobile game data",format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "100%",height="400px")
+```
+
+We have 31 days in the data, and we will start by findings the first observation for each player and count the number of active players for each day.
+
+```{r}
+cohorts <- cohorts %>%
+  group_by(userid) %>%
+  mutate(first = min(eventDate)) %>%
+  group_by(first, eventDate) %>% 
+  summarise(Players = n()) %>%
+  pivot_wider(names_from = eventDate, values_from = Players) %>%
+  ungroup() %>%
+  mutate(first = as.character(seq(1,n_distinct(first)))) %>%
+  data.frame()
+```
+
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+kable(cohorts[1:8,],caption = "Cohorts",format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "100%",height="400px")
+```
+
+To get the data into the right format for plotting, we need to shift column positions, which we can do in the following way.
+
+```{r}
+cohorts_shifted <- cohorts             # create new data frame from 'cohorts'
+ncols_total <- ncol(cohorts_shifted)   # count number of columns in data set
+
+for (i in 1:nrow(cohorts_shifted)) {   # for loop for shifting each row
+  
+  row   = cohorts_shifted[i,]          # select row from data frame
+  row   = row[ , !is.na(row[])]        # remove columns with zeros
+  ncols = ncol(row)                    # count number of columns in row
+                                     
+  if (ncols < ncols_total) {           # fill columns after values by zeros
+    
+    row[, c((ncols+1):ncols_total)] = 0
+  }
+  
+  cohorts_shifted[i,] = row            # replace initial row
+}
+```
+
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+kable(cohorts_shifted[1:8,],caption = "Cohorts",format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "100%",height="400px")
+```
+
+Before plotting, we now need to calculate retention rates and transform our data to long format.
+
+```{r}
+# percentages
+
+x <- cohorts_shifted[,c(2:ncol(cohorts_shifted))]
+y <- cohorts_shifted[,2]
+
+retention_rates <- apply(x, 2, function(x) round(x/y * 100,1)) %>%
+  data.frame() %>%
+  mutate(cohort=as.character(1:nrow(cohorts))) %>%
+  select(cohort, everything())
+
+# remove last cohort and 1st days
+retention_rates <- retention_rates[-nrow(retention_rates),-2] 
+
+names(retention_rates)[2:ncol(retention_rates)] <- seq(1:(ncol(retention_rates)-1))
+
+retention_rates <- retention_rates %>% 
+  pivot_longer(-cohort, names_to = "Day", values_to = "Retention")
+
+retention_rates <- retention_rates %>%
+  filter(Retention != 0)
+```
+
+For the sake of clarity, we will only plot the day-to-day retention rates for the first five cohorts.
+
+```{r}
+retention_rates %>% 
+  filter(as.numeric(cohort) <= 5) %>%
+  ggplot(aes(x=as.numeric(Day),y=Retention, colour = factor(cohort), group=cohort)) +
+  geom_line(size=1.5) +
+  geom_point(size=1.5) 
+```
+
+Another way of visualizing retention rates for different cohorts is by means of a retention table, which can be easier to inspect when dealing with many cohorts and time periods.
+
+```{r}
+retention_rates %>%
+  ggplot(aes(x = as.numeric(Day), y = reorder(cohort, desc(as.numeric(cohort))))) +
+  geom_raster(aes(fill = log(Retention))) +
+  coord_equal(ratio = 1) +
+  geom_text(aes(label = glue::glue("{round(Retention,0)}%")), size = 2, color = "snow") +
+  #scale_fill_gradient(low="#330425",high="#C83488", guide=F) +
+  theme_light() +
+  theme(axis.text  = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        panel.grid = element_blank(),
+        panel.border = element_blank()) +
+  labs(y= "cohort") +
+  scale_fill_gradient_tableau()
+
+```
 
