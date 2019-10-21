@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Describe
 
 ```{r include=FALSE}
@@ -15,32 +20,110 @@ library(ggridges)
 library(lubridate)
 library(hrbrthemes)
 library(scales)
+library(ggthemes)
 
 # ggplot theme
-theme_set(theme_ipsum_rc())
-
+theme_set(theme_ipsum_rc(
+  axis_title_size = 18,
+  strip_text_size = 18,
+  base_size = 16,
+  plot_title_size = 20
+))
 ```
 
-The dataset we'll be using to calculate KPIs consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We'll also create variables for the total amounts spent and month (1 to 12).
+## Exploratory analysis
+
+There are many useful R packages that can help us get a quick overview of the characteristics of new datasets. Here, we'll create plots to show the distribution of numeric variables and count the tokens of categorical variables. Moreover, in this dataset containing information about travel insurance claims, we also want to check if claims might be related to other variables.
 
 ```{r}
-df <- read_excel("Data/retail.xlsx") %>%
-  mutate(TotalAmount = Quantity * UnitPrice,
-         Month       = month(InvoiceDate))
+insurance <- read_csv("travel_insurance.csv")
 ```
 
 ```{r echo = FALSE}
 library(knitr)
 library(kableExtra)
-kable(df[1:4,],caption = "Online retail data",format = "html") %>%
+
+insurance <- insurance %>%
+  filter(
+    Age < 90,
+    Duration < 500,
+    `Commision (in value)` < 100,
+    `Net Sales` < 500,
+    `Net Sales` > -100
+  )
+
+kable(insurance[1:4, ], caption = "Travel insurance data", format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "100%",height="400px")
+  scroll_box(width = "100%", height = "400px")
 ```
 
-## Exploratory analysis
+We first select and plot the numeric variables in individual density plots by facetting the variables.
 
+```{r fig.width=9, fig.height=9}
+num_vars <- insurance %>%
+  select_if(is.numeric) %>%
+  names()
+
+insurance %>%
+  select(Claim, num_vars) %>%
+  gather(variable, value, -Claim) %>%
+  ggplot(aes(x = value, fill = Claim, colour = Claim)) +
+  facet_wrap(~variable, scales = "free", ncol = 2) +
+  geom_density(alpha = 0.5) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0),
+    legend.position = "top",
+    legend.text = element_text(size = 20),
+    legend.title = element_text(size = 22)
+  ) +
+  scale_color_tableau() +
+  scale_fill_tableau() +
+  labs(x = "Value", y = "Density")
+```
+
+We can then do the same for categorical variables leaving out `Product Name` and `Destination`, since these variables have too many category levels to plot in this way.
+
+```{r fig.width=9, fig.height=9}
+insurance %>%
+  select_if(is.character) %>%
+  select(-`Product Name`, -Destination) %>%
+  gather(variable, value, -Claim) %>%
+  mutate(value = ifelse(is.na(value), "na", value)) %>%
+  count(Claim, variable, value) %>%
+  ggplot(aes(x = reorder(value, -n), y = n, fill = Claim)) +
+  facet_wrap(~variable, ncol = 2, scales = "free") +
+  geom_bar(stat = "identity") +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top",
+    legend.text = element_text(size = 20),
+    legend.title = element_text(size = 22)
+  ) +
+  labs(x = "") +
+  scale_fill_tableau() +
+  labs(x = "Category Levels", y = "N")
+```
 
 ## Key performance indicators
+
+The dataset we'll be using to calculate KPIs consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We'll also create variables for the total amounts spent and month (1 to 12).
+
+```{r}
+retail <- read_excel("Data/retail.xlsx") %>%
+  mutate(
+    TotalAmount = Quantity * UnitPrice,
+    Month = month(InvoiceDate)
+  )
+```
+
+```{r echo = FALSE}
+library(knitr)
+library(kableExtra)
+
+kable(retail[1:4, ], caption = "Online retail data", format = "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+  scroll_box(width = "100%", height = "400px")
+```
 
 There are dozens of well-known KPIs commonly used to track various aspects of a company's performance and choosing the relevant metrics is essential to obtain meaningful results.
 The below examples demonstrate how to calculate and visualize information about sales and customers.
@@ -48,87 +131,102 @@ The below examples demonstrate how to calculate and visualize information about 
 First, we'll create a plot showing the total revenue for each month.
 
 ```{r}
-df %>%
+retail %>%
   group_by(Month) %>%
-  summarise(Revenue =sum(TotalAmount)) %>%
+  summarise(Revenue = sum(TotalAmount)) %>%
   ggplot(aes(factor(Month), Revenue)) +
-  geom_col() +
+  geom_col(fill = "#4E79A7") +
   ggtitle("Revenue per month") +
   scale_y_continuous(labels = function(n) {
-    trans = n / 1000
+    trans <- n / 1000
     paste0(trans, "K")
-  })
+  }) +
+  labs(x = "Month")
 ```
 
 We can then calculate the mean and median order size and amount spent per purchase in the following way.
 
 ```{r}
-df %>%
+orders <- retail %>%
   group_by(InvoiceNo) %>%
   count() %>%
   ungroup() %>%
-  summarise(mean = mean(n),
-            median = median(n))
+  summarise(
+    mean_order_size = mean(n),
+    median_order_size = median(n)
+  )
 
-df %>%
-  summarise(mean = mean(TotalAmount),
-            median = median(TotalAmount)) 
+amounts <- retail %>%
+  group_by(InvoiceNo) %>%
+  summarise(sum = sum(TotalAmount)) %>%
+  summarise(
+    mean_amount = mean(sum),
+    median_amount = median(sum)
+  )
+
+cbind(orders, amounts)
 ```
 
 We may also want to know whether e.g. order sizes change over time. In this dataset, the per-month distributions look identical.
 
 ```{r}
-df %>%
-  group_by(Month,InvoiceNo) %>%
+retail %>%
+  group_by(Month, InvoiceNo) %>%
   count() %>%
   ungroup() %>%
   mutate(Month = factor(Month, levels = rev(1:12))) %>%
-  filter(n<80) %>%
-  ggplot(aes(x=n,y=Month)) +
-  geom_density_ridges()
+  filter(n < 80) %>%
+  ggplot(aes(x = n, y = Month, fill = ..density..)) +
+  geom_density_ridges_gradient(rel_min_height = 0.01) +
+  scale_fill_gradient_tableau(guide = F) +
+  labs(x = "Order size")
 ```
 
 We can also calculate the revenue per customer to get an idea of how much one customer is worth to the company (in a one-year period).
 
 ```{r}
-df %>% 
+retail %>%
   group_by(CustomerID) %>%
   summarise(Revenue = sum(TotalAmount)) %>%
-  summarise(mean = mean(Revenue),
-            median = median(Revenue))
+  summarise(
+    mean = mean(Revenue),
+    median = median(Revenue)
+  )
 ```
 
 Acquiring new customers is important to any business, and we can measure performance in this area by looking at the number of new customers acquired in each month.
 
 ```{r}
-df %>%
+retail %>%
   group_by(CustomerID) %>%
   summarise(Min_month = min(Month)) %>%
-  mutate(Min_month = factor(Min_month,levels = 1:12)) %>%
+  mutate(Min_month = factor(Min_month, levels = 1:12)) %>%
   count(Min_month) %>%
-  ggplot(aes(Min_month,n)) +
-  geom_col()
+  ggplot(aes(Min_month, n)) +
+  geom_col(fill = "#4E79A7") +
+  labs(x = "Month", y = "N", title = "New Customers")
 ```
 
 In addition, we may want to know the growth rate comparing the percentage of new customers for each month with previous months.
 
 ```{r}
-df %>%
+retail %>%
   group_by(CustomerID) %>%
   summarise(Min_month = min(Month)) %>%
-  mutate(Min_month = factor(Min_month,levels = 1:12)) %>%
+  mutate(Min_month = factor(Min_month, levels = 1:12)) %>%
   count(Min_month) %>%
   mutate(Growth_Rate = (n - lag(n)) / lag(n) * 100) %>%
-  ggplot(aes(Min_month,Growth_Rate)) +
-  geom_col() +
-  scale_y_continuous(labels = percent_format(scale=1))
+  ggplot(aes(Min_month, Growth_Rate)) +
+  geom_col(fill = "#4E79A7") +
+  scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
+  labs(x = "Month", y = "Growth rate")
 ```
 
 ## Retention and cohorts
 
-We have just examined the acquisition of new customers over time. Another important aspect of customer value is the retention rate, which we'll measure for customers acquired at different times. These groups are called cohorts.
+We have just examined the acquisition of new customers over time. Another important aspect of customer valuation is the retention rate, which we'll measure for customers acquired at different times. These groups are called cohorts.
 
-We'll use a large dataset from a mobile game where each "event" is a new player signing up or starting a game between April 27th and May 27 2016.
+We'll use a large dataset from a mobile game where each "event" is a new player signing up or starting a new game between April 27th and May 27 2016. We then calculate the percentage of players that kept playing the game for each day of the period.
 
 ```{r}
 cohorts <- read_csv("Data/game_data.csv")
@@ -137,9 +235,10 @@ cohorts <- read_csv("Data/game_data.csv")
 ```{r echo = FALSE}
 library(knitr)
 library(kableExtra)
-kable(cohorts[1:8,],caption = "Mobile game data",format = "html") %>%
+
+kable(cohorts[1:8, ], caption = "Mobile game data", format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "100%",height="400px")
+  scroll_box(width = "100%", height = "400px")
 ```
 
 We have 31 days in the data, and we will start by findings the first observation for each player and count the number of active players for each day.
@@ -148,49 +247,50 @@ We have 31 days in the data, and we will start by findings the first observation
 cohorts <- cohorts %>%
   group_by(userid) %>%
   mutate(first = min(eventDate)) %>%
-  group_by(first, eventDate) %>% 
+  group_by(first, eventDate) %>%
   summarise(Players = n()) %>%
   pivot_wider(names_from = eventDate, values_from = Players) %>%
   ungroup() %>%
-  mutate(first = as.character(seq(1,n_distinct(first)))) %>%
+  mutate(first = as.character(seq(1, n_distinct(first)))) %>%
   data.frame()
 ```
 
 ```{r echo = FALSE}
 library(knitr)
 library(kableExtra)
-kable(cohorts[1:8,],caption = "Cohorts",format = "html") %>%
+
+kable(cohorts[1:8, ], caption = "Cohorts I", format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "100%",height="400px")
+  scroll_box(width = "100%", height = "400px")
 ```
 
 To get the data into the right format for plotting, we need to shift column positions, which we can do in the following way.
 
 ```{r}
-cohorts_shifted <- cohorts             # create new data frame from 'cohorts'
-ncols_total <- ncol(cohorts_shifted)   # count number of columns in data set
+cohorts_shifted <- cohorts # create new data frame from 'cohorts'
+ncols_total <- ncol(cohorts_shifted) # count number of columns in data set
 
-for (i in 1:nrow(cohorts_shifted)) {   # for loop for shifting each row
-  
-  row   = cohorts_shifted[i,]          # select row from data frame
-  row   = row[ , !is.na(row[])]        # remove columns with zeros
-  ncols = ncol(row)                    # count number of columns in row
-                                     
-  if (ncols < ncols_total) {           # fill columns after values by zeros
-    
-    row[, c((ncols+1):ncols_total)] = 0
+for (i in 1:nrow(cohorts_shifted)) { # for loop for shifting each row
+
+  row <- cohorts_shifted[i, ] # select row from data frame
+  row <- row[, !is.na(row[])] # remove columns with zeros
+  ncols <- ncol(row) # count number of columns in row
+
+  if (ncols < ncols_total) { # fill columns after values by zeros
+
+    row[, c((ncols + 1):ncols_total)] <- 0
   }
-  
-  cohorts_shifted[i,] = row            # replace initial row
+
+  cohorts_shifted[i, ] <- row # replace initial row
 }
 ```
 
 ```{r echo = FALSE}
 library(knitr)
 library(kableExtra)
-kable(cohorts_shifted[1:8,],caption = "Cohorts",format = "html") %>%
+kable(cohorts_shifted[1:8, ], caption = "Cohorts II", format = "html") %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-  scroll_box(width = "100%",height="400px")
+  scroll_box(width = "100%", height = "400px")
 ```
 
 Before plotting, we now need to calculate retention rates and transform our data to long format.
@@ -198,20 +298,20 @@ Before plotting, we now need to calculate retention rates and transform our data
 ```{r}
 # percentages
 
-x <- cohorts_shifted[,c(2:ncol(cohorts_shifted))]
-y <- cohorts_shifted[,2]
+x <- cohorts_shifted[, c(2:ncol(cohorts_shifted))]
+y <- cohorts_shifted[, 2]
 
-retention_rates <- apply(x, 2, function(x) round(x/y * 100,1)) %>%
+retention_rates <- apply(x, 2, function(x) round(x / y * 100, 1)) %>%
   data.frame() %>%
-  mutate(cohort=as.character(1:nrow(cohorts))) %>%
+  mutate(cohort = as.character(1:nrow(cohorts))) %>%
   select(cohort, everything())
 
 # remove last cohort and 1st days
-retention_rates <- retention_rates[-nrow(retention_rates),-2] 
+retention_rates <- retention_rates[-nrow(retention_rates), -2]
 
-names(retention_rates)[2:ncol(retention_rates)] <- seq(1:(ncol(retention_rates)-1))
+names(retention_rates)[2:ncol(retention_rates)] <- seq(1:(ncol(retention_rates) - 1))
 
-retention_rates <- retention_rates %>% 
+retention_rates <- retention_rates %>%
   pivot_longer(-cohort, names_to = "Day", values_to = "Retention")
 
 retention_rates <- retention_rates %>%
@@ -221,29 +321,31 @@ retention_rates <- retention_rates %>%
 For the sake of clarity, we will only plot the day-to-day retention rates for the first five cohorts.
 
 ```{r}
-retention_rates %>% 
+retention_rates %>%
   filter(as.numeric(cohort) <= 5) %>%
-  ggplot(aes(x=as.numeric(Day),y=Retention, colour = factor(cohort), group=cohort)) +
-  geom_line(size=1.5) +
-  geom_point(size=1.5) 
+  ggplot(aes(x = as.numeric(Day), y = Retention, colour = factor(cohort), group = cohort)) +
+  geom_line(size = 1.5, alpha = .7) +
+  scale_colour_tableau() +
+  scale_y_continuous(labels = percent_format(scale = 1)) +
+  labs(x = "Day", y = "Retention rate", colour = "Cohort")
 ```
 
 Another way of visualizing retention rates for different cohorts is by means of a retention table, which can be easier to inspect when dealing with many cohorts and time periods.
 
-```{r}
+```{r fig.width=9, fig.height=9}
 retention_rates %>%
   ggplot(aes(x = as.numeric(Day), y = reorder(cohort, desc(as.numeric(cohort))))) +
   geom_raster(aes(fill = log(Retention))) +
   coord_equal(ratio = 1) +
   geom_text(aes(label = glue::glue("{round(Retention,0)}%")), size = 2, color = "snow") +
-  #scale_fill_gradient(low="#330425",high="#C83488", guide=F) +
   theme_light() +
-  theme(axis.text  = element_text(size = 14),
-        axis.title = element_text(size = 16),
-        panel.grid = element_blank(),
-        panel.border = element_blank()) +
-  labs(y= "cohort") +
-  scale_fill_gradient_tableau()
-
+  theme(
+    axis.text = element_text(size = 14),
+    axis.title = element_text(size = 16),
+    panel.grid = element_blank(),
+    panel.border = element_blank()
+  ) +
+  labs(x = "Day", y = "Cohort", title = "Retention table") +
+  scale_fill_gradient_tableau(guide = F)
 ```
 
