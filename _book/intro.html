@@ -11,7 +11,7 @@
   <meta property="og:title" content="Customer Analytics in R" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:image" content="null" />
   <meta property="og:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
   
 
@@ -19,12 +19,12 @@
   <meta name="twitter:title" content="Customer Analytics in R" />
   
   <meta name="twitter:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
-  
+  <meta name="twitter:image" content="null" />
 
 <meta name="author" content="? and Peer Christensen" />
 
 
-<meta name="date" content="2019-09-27" />
+<meta name="date" content="2019-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 
-<link rel="next" href="market-basket-analysis.html"/>
+<link rel="next" href="describe.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -132,12 +133,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="market-basket-analysis.html"><a href="market-basket-analysis.html"><i class="fa fa-check"></i><b>2</b> Market basket analysis</a></li>
-<li class="chapter" data-level="3" data-path="predicting-customer-churn.html"><a href="predicting-customer-churn.html"><i class="fa fa-check"></i><b>3</b> Predicting Customer Churn</a></li>
-<li class="chapter" data-level="4" data-path="customer-segmentation.html"><a href="customer-segmentation.html"><i class="fa fa-check"></i><b>4</b> Customer Segmentation</a></li>
-<li class="chapter" data-level="5" data-path="customer-lifetime-value.html"><a href="customer-lifetime-value.html"><i class="fa fa-check"></i><b>5</b> Customer Lifetime Value</a></li>
-<li class="chapter" data-level="6" data-path="survival-analysis.html"><a href="survival-analysis.html"><i class="fa fa-check"></i><b>6</b> Survival Analysis</a></li>
-<li class="chapter" data-level="7" data-path="opinion-mining-and-customer-feedback.html"><a href="opinion-mining-and-customer-feedback.html"><i class="fa fa-check"></i><b>7</b> Opinion Mining and Customer Feedback</a></li>
+<li class="chapter" data-level="2" data-path="describe.html"><a href="describe.html"><i class="fa fa-check"></i><b>2</b> Describe</a><ul>
+<li class="chapter" data-level="2.1" data-path="describe.html"><a href="describe.html#exploratory-analysis"><i class="fa fa-check"></i><b>2.1</b> Exploratory analysis</a></li>
+<li class="chapter" data-level="2.2" data-path="describe.html"><a href="describe.html#key-performance-indicators"><i class="fa fa-check"></i><b>2.2</b> Key performance indicators</a></li>
+<li class="chapter" data-level="2.3" data-path="describe.html"><a href="describe.html#retention-and-cohorts"><i class="fa fa-check"></i><b>2.3</b> Retention and cohorts</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="explain.html"><a href="explain.html"><i class="fa fa-check"></i><b>3</b> Explain</a><ul>
+<li class="chapter" data-level="3.1" data-path="explain.html"><a href="explain.html#regression"><i class="fa fa-check"></i><b>3.1</b> Regression</a></li>
+<li class="chapter" data-level="3.2" data-path="explain.html"><a href="explain.html#ab-testing"><i class="fa fa-check"></i><b>3.2</b> A/B Testing</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="predict.html"><a href="predict.html"><i class="fa fa-check"></i><b>4</b> Predict</a><ul>
+<li class="chapter" data-level="4.1" data-path="predict.html"><a href="predict.html#churn"><i class="fa fa-check"></i><b>4.1</b> Churn</a></li>
+<li class="chapter" data-level="4.2" data-path="predict.html"><a href="predict.html#survival-analysis"><i class="fa fa-check"></i><b>4.2</b> Survival analysis</a></li>
+<li class="chapter" data-level="4.3" data-path="predict.html"><a href="predict.html#forecasting"><i class="fa fa-check"></i><b>4.3</b> Forecasting</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="segment.html"><a href="segment.html"><i class="fa fa-check"></i><b>5</b> Segment</a><ul>
+<li class="chapter" data-level="5.1" data-path="segment.html"><a href="segment.html#rfm"><i class="fa fa-check"></i><b>5.1</b> RFM</a></li>
+<li class="chapter" data-level="5.2" data-path="segment.html"><a href="segment.html#k-means-clustering"><i class="fa fa-check"></i><b>5.2</b> K-means clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>6</b> Text mining</a><ul>
+<li class="chapter" data-level="6.1" data-path="text-mining.html"><a href="text-mining.html#getting-review-data"><i class="fa fa-check"></i><b>6.1</b> Getting review data</a></li>
+<li class="chapter" data-level="6.2" data-path="text-mining.html"><a href="text-mining.html#exploring-ratings"><i class="fa fa-check"></i><b>6.2</b> Exploring ratings</a></li>
+<li class="chapter" data-level="6.3" data-path="text-mining.html"><a href="text-mining.html#word-frequency"><i class="fa fa-check"></i><b>6.3</b> Word Frequency</a></li>
+<li class="chapter" data-level="6.4" data-path="text-mining.html"><a href="text-mining.html#word-correlations"><i class="fa fa-check"></i><b>6.4</b> Word correlations</a></li>
+<li class="chapter" data-level="6.5" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>6.5</b> Sentiment analysis</a></li>
+<li class="chapter" data-level="6.6" data-path="text-mining.html"><a href="text-mining.html#topic-modelling"><i class="fa fa-check"></i><b>6.6</b> Topic modelling</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -161,7 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Customer Analytics in R</h1>
 <p class="author"><em>? and Peer Christensen</em></p>
-<p class="date"><em>2019-09-27</em></p>
+<p class="date"><em>2019-10-31</em></p>
 </div>
 <div id="intro" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction</h1>
@@ -177,7 +198,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="market-basket-analysis.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="describe.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

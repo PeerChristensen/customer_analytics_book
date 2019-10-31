@@ -3,11 +3,12 @@ output:
   pdf_document: default
   html_document: default
 ---
-# Describe
 
 ```{r include=FALSE}
 knitr::opts_chunk$set(warning = F, error = F, message = F, cache = F)
 ```
+
+# Describe
 
 This chapter provides code for exploring characteristics of datasets and recipes for calculating and plotting simple descriptive statistics and *key performance indicators*, or KPIs, commonly used to keep track of business performance and customer relations.
 

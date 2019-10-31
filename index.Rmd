@@ -2,6 +2,10 @@
 title: "Customer Analytics in R"
 author: '? and Peer Christensen'
 date: "`r Sys.Date()`"
+bookdown::gitbook:
+  config:
+    toc:
+      collapse: section
 cover-image: null
 bibliography:
 - book.bib
@@ -12,10 +16,6 @@ documentclass: book
 link-citations: yes
 site: bookdown::bookdown_site
 biblio-style: apalike
-bookdown::gitbook:
-  config:
-    toc:
-      collapse: section
 ---
 
 ---
