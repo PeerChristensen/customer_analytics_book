@@ -4,34 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Market basket analysis | Customer Analytics in R</title>
+  <title>Chapter 3 Market basket analysis | Customer Analytics in R</title>
   <meta name="description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
   <meta name="generator" content="bookdown 0.13.2 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Market basket analysis | Customer Analytics in R" />
+  <meta property="og:title" content="Chapter 3 Market basket analysis | Customer Analytics in R" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:image" content="null" />
   <meta property="og:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Market basket analysis | Customer Analytics in R" />
+  <meta name="twitter:title" content="Chapter 3 Market basket analysis | Customer Analytics in R" />
   
   <meta name="twitter:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
-  
+  <meta name="twitter:image" content="null" />
 
 <meta name="author" content="? and Peer Christensen" />
 
 
-<meta name="date" content="2019-09-27" />
+<meta name="date" content="2019-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="intro.html"/>
+<link rel="prev" href="describe.html"/>
 <link rel="next" href="predicting-customer-churn.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -132,12 +133,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="market-basket-analysis.html"><a href="market-basket-analysis.html"><i class="fa fa-check"></i><b>2</b> Market basket analysis</a></li>
-<li class="chapter" data-level="3" data-path="predicting-customer-churn.html"><a href="predicting-customer-churn.html"><i class="fa fa-check"></i><b>3</b> Predicting Customer Churn</a></li>
-<li class="chapter" data-level="4" data-path="customer-segmentation.html"><a href="customer-segmentation.html"><i class="fa fa-check"></i><b>4</b> Customer Segmentation</a></li>
-<li class="chapter" data-level="5" data-path="customer-lifetime-value.html"><a href="customer-lifetime-value.html"><i class="fa fa-check"></i><b>5</b> Customer Lifetime Value</a></li>
-<li class="chapter" data-level="6" data-path="survival-analysis.html"><a href="survival-analysis.html"><i class="fa fa-check"></i><b>6</b> Survival Analysis</a></li>
-<li class="chapter" data-level="7" data-path="opinion-mining-and-customer-feedback.html"><a href="opinion-mining-and-customer-feedback.html"><i class="fa fa-check"></i><b>7</b> Opinion Mining and Customer Feedback</a></li>
+<li class="chapter" data-level="2" data-path="describe.html"><a href="describe.html"><i class="fa fa-check"></i><b>2</b> Describe</a><ul>
+<li class="chapter" data-level="2.1" data-path="describe.html"><a href="describe.html#exploratory-analysis"><i class="fa fa-check"></i><b>2.1</b> Exploratory analysis</a></li>
+<li class="chapter" data-level="2.2" data-path="describe.html"><a href="describe.html#key-performance-indicators"><i class="fa fa-check"></i><b>2.2</b> Key performance indicators</a></li>
+<li class="chapter" data-level="2.3" data-path="describe.html"><a href="describe.html#retention-and-cohorts"><i class="fa fa-check"></i><b>2.3</b> Retention and cohorts</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="market-basket-analysis.html"><a href="market-basket-analysis.html"><i class="fa fa-check"></i><b>3</b> Market basket analysis</a></li>
+<li class="chapter" data-level="4" data-path="predicting-customer-churn.html"><a href="predicting-customer-churn.html"><i class="fa fa-check"></i><b>4</b> Predicting Customer Churn</a></li>
+<li class="chapter" data-level="5" data-path="customer-segmentation.html"><a href="customer-segmentation.html"><i class="fa fa-check"></i><b>5</b> Customer Segmentation</a></li>
+<li class="chapter" data-level="6" data-path="customer-lifetime-value.html"><a href="customer-lifetime-value.html"><i class="fa fa-check"></i><b>6</b> Customer Lifetime Value</a></li>
+<li class="chapter" data-level="7" data-path="survival-analysis.html"><a href="survival-analysis.html"><i class="fa fa-check"></i><b>7</b> Survival Analysis</a></li>
+<li class="chapter" data-level="8" data-path="opinion-mining-and-customer-feedback.html"><a href="opinion-mining-and-customer-feedback.html"><i class="fa fa-check"></i><b>8</b> Opinion Mining and Customer Feedback</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -159,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="market-basket-analysis" class="section level1">
-<h1><span class="header-section-number">Chapter 2</span> Market basket analysis</h1>
+<h1><span class="header-section-number">Chapter 3</span> Market basket analysis</h1>
 <p>For companies trying to…., market basket analysis can be a powerful tool and is frequently used in customer analytics.</p>
 <p>Market basket analysis allows companies to identify which items are more likely to be bought together and therefore are bbetter candidates for cross-selling.</p>
 
@@ -169,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="describe.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="predicting-customer-churn.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

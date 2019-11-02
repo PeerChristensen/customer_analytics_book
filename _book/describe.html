@@ -1,0 +1,2712 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Describe | Customer Analytics in R</title>
+  <meta name="description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
+  <meta name="generator" content="bookdown 0.13.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Describe | Customer Analytics in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="null" />
+  <meta property="og:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Describe | Customer Analytics in R" />
+  
+  <meta name="twitter:description" content="This book is designed to be a ressource with useful R code for doing common customer analytics tasks." />
+  <meta name="twitter:image" content="null" />
+
+<meta name="author" content="? and Peer Christensen" />
+
+
+<meta name="date" content="2019-11-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="market-basket-analysis.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Customer Analytics in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="describe.html"><a href="describe.html"><i class="fa fa-check"></i><b>2</b> Describe</a><ul>
+<li class="chapter" data-level="2.1" data-path="describe.html"><a href="describe.html#exploratory-analysis"><i class="fa fa-check"></i><b>2.1</b> Exploratory analysis</a></li>
+<li class="chapter" data-level="2.2" data-path="describe.html"><a href="describe.html#key-performance-indicators"><i class="fa fa-check"></i><b>2.2</b> Key performance indicators</a></li>
+<li class="chapter" data-level="2.3" data-path="describe.html"><a href="describe.html#retention-and-cohorts"><i class="fa fa-check"></i><b>2.3</b> Retention and cohorts</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="market-basket-analysis.html"><a href="market-basket-analysis.html"><i class="fa fa-check"></i><b>3</b> Market basket analysis</a></li>
+<li class="chapter" data-level="4" data-path="predicting-customer-churn.html"><a href="predicting-customer-churn.html"><i class="fa fa-check"></i><b>4</b> Predicting Customer Churn</a></li>
+<li class="chapter" data-level="5" data-path="customer-segmentation.html"><a href="customer-segmentation.html"><i class="fa fa-check"></i><b>5</b> Customer Segmentation</a></li>
+<li class="chapter" data-level="6" data-path="customer-lifetime-value.html"><a href="customer-lifetime-value.html"><i class="fa fa-check"></i><b>6</b> Customer Lifetime Value</a></li>
+<li class="chapter" data-level="7" data-path="survival-analysis.html"><a href="survival-analysis.html"><i class="fa fa-check"></i><b>7</b> Survival Analysis</a></li>
+<li class="chapter" data-level="8" data-path="opinion-mining-and-customer-feedback.html"><a href="opinion-mining-and-customer-feedback.html"><i class="fa fa-check"></i><b>8</b> Opinion Mining and Customer Feedback</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Customer Analytics in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="describe" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Describe</h1>
+<p>This chapter provides code for exploring characteristics of datasets and recipes for calculating and plotting simple descriptive statistics and <em>key performance indicators</em>, or KPIs, commonly used to keep track of business performance and customer relations.</p>
+<p>To run the code for this chapter, you will need to install and load the following packages.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(readxl)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(ggridges)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(lubridate)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(hrbrthemes)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">library</span>(scales)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">library</span>(ggthemes)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># ggplot theme</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">theme_set</span>(<span class="kw">theme_ipsum_rc</span>(</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">  <span class="dt">axis_title_size =</span> <span class="dv">18</span>,</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">  <span class="dt">strip_text_size =</span> <span class="dv">18</span>,</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">  <span class="dt">base_size =</span> <span class="dv">16</span>,</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="dt">plot_title_size =</span> <span class="dv">20</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">))</a></code></pre></div>
+<div id="exploratory-analysis" class="section level2">
+<h2><span class="header-section-number">2.1</span> Exploratory analysis</h2>
+<p>There are many useful R packages that can help us get a quick overview of the characteristics of new datasets. Here, we’ll create plots to show the distribution of numeric variables and count the tokens of categorical variables. Moreover, in this dataset containing information about travel insurance claims, we also want to check if claims might be related to other variables.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">insurance &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;travel_insurance.csv&quot;</span>)</a></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-5">Table 2.1: </span>Travel insurance data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Agency
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Agency Type
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Distribution Channel
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Product Name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Claim
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Duration
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Destination
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Net Sales
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Commision (in value)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Gender
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Age
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CBH
+</td>
+<td style="text-align:left;">
+Travel Agency
+</td>
+<td style="text-align:left;">
+Offline
+</td>
+<td style="text-align:left;">
+Comprehensive Plan
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:left;">
+MALAYSIA
+</td>
+<td style="text-align:right;">
+-29.0
+</td>
+<td style="text-align:right;">
+9.57
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+81
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CBH
+</td>
+<td style="text-align:left;">
+Travel Agency
+</td>
+<td style="text-align:left;">
+Offline
+</td>
+<td style="text-align:left;">
+Comprehensive Plan
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+186
+</td>
+<td style="text-align:left;">
+MALAYSIA
+</td>
+<td style="text-align:right;">
+-29.0
+</td>
+<td style="text-align:right;">
+9.57
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+71
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CWT
+</td>
+<td style="text-align:left;">
+Travel Agency
+</td>
+<td style="text-align:left;">
+Online
+</td>
+<td style="text-align:left;">
+Rental Vehicle Excess Insurance
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:left;">
+AUSTRALIA
+</td>
+<td style="text-align:right;">
+-49.5
+</td>
+<td style="text-align:right;">
+29.70
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CWT
+</td>
+<td style="text-align:left;">
+Travel Agency
+</td>
+<td style="text-align:left;">
+Online
+</td>
+<td style="text-align:left;">
+Rental Vehicle Excess Insurance
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+AUSTRALIA
+</td>
+<td style="text-align:right;">
+-39.6
+</td>
+<td style="text-align:right;">
+23.76
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We first select and plot the numeric variables in individual density plots by facetting the variables.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">num_vars &lt;-<span class="st"> </span>insurance <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">select_if</span>(is.numeric) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw">names</span>()</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">insurance <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">select</span>(Claim, num_vars) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="kw">gather</span>(variable, value, <span class="op">-</span>Claim) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> value, <span class="dt">fill =</span> Claim, <span class="dt">colour =</span> Claim)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>, <span class="dt">ncol =</span> <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">  </span><span class="kw">theme</span>(</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">    <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">0</span>, <span class="dt">hjust =</span> <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">    <span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>,</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">    <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">20</span>),</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">    <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">22</span>)</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="st">  </span><span class="kw">scale_color_tableau</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="st">  </span><span class="kw">scale_fill_tableau</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Value&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Density&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-6-1.png" width="864" /></p>
+<p>We can then do the same for categorical variables leaving out <code>Product Name</code> and <code>Destination</code>, since these variables have too many category levels to plot in this way.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">insurance <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">select_if</span>(is.character) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="st">`</span><span class="dt">Product Name</span><span class="st">`</span>, <span class="op">-</span>Destination) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">gather</span>(variable, value, <span class="op">-</span>Claim) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">value =</span> <span class="kw">ifelse</span>(<span class="kw">is.na</span>(value), <span class="st">&quot;na&quot;</span>, value)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">count</span>(Claim, variable, value) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(value, <span class="op">-</span>n), <span class="dt">y =</span> n, <span class="dt">fill =</span> Claim)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>variable, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">theme</span>(</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">    <span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">45</span>, <span class="dt">hjust =</span> <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">    <span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>,</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">    <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">20</span>),</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">    <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">22</span>)</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw">scale_fill_tableau</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Category Levels&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;N&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-7-1.png" width="864" /></p>
+</div>
+<div id="key-performance-indicators" class="section level2">
+<h2><span class="header-section-number">2.2</span> Key performance indicators</h2>
+<p>The dataset we’ll be using to calculate KPIs consists of transactional data from an online retail store between December 2010 and December 2011 with unique IDs for invoices and customers. We’ll also create variables for the total amounts spent and month (1 to 12).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">retail &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="st">&quot;Data/retail.xlsx&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="dt">TotalAmount =</span> Quantity <span class="op">*</span><span class="st"> </span>UnitPrice,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">Month =</span> <span class="kw">month</span>(InvoiceDate)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">  )</a></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-9">Table 2.2: </span>Online retail data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+InvoiceNo
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+StockCode
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Description
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Quantity
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+InvoiceDate
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+UnitPrice
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+CustomerID
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Country
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+TotalAmount
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Month
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+536365
+</td>
+<td style="text-align:left;">
+85123A
+</td>
+<td style="text-align:left;">
+WHITE HANGING HEART T-LIGHT HOLDER
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2010-12-01 08:26:00
+</td>
+<td style="text-align:right;">
+2.55
+</td>
+<td style="text-align:right;">
+17850
+</td>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:right;">
+15.30
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+536365
+</td>
+<td style="text-align:left;">
+71053
+</td>
+<td style="text-align:left;">
+WHITE METAL LANTERN
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2010-12-01 08:26:00
+</td>
+<td style="text-align:right;">
+3.39
+</td>
+<td style="text-align:right;">
+17850
+</td>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:right;">
+20.34
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+536365
+</td>
+<td style="text-align:left;">
+84406B
+</td>
+<td style="text-align:left;">
+CREAM CUPID HEARTS COAT HANGER
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+2010-12-01 08:26:00
+</td>
+<td style="text-align:right;">
+2.75
+</td>
+<td style="text-align:right;">
+17850
+</td>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:right;">
+22.00
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+536365
+</td>
+<td style="text-align:left;">
+84029G
+</td>
+<td style="text-align:left;">
+KNITTED UNION FLAG HOT WATER BOTTLE
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2010-12-01 08:26:00
+</td>
+<td style="text-align:right;">
+3.39
+</td>
+<td style="text-align:right;">
+17850
+</td>
+<td style="text-align:left;">
+United Kingdom
+</td>
+<td style="text-align:right;">
+20.34
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>There are dozens of well-known KPIs commonly used to track various aspects of a company’s performance and choosing the relevant metrics is essential to obtain meaningful results.
+The below examples demonstrate how to calculate and visualize information about sales and customers.</p>
+<p>First, we’ll create a plot showing the total revenue for each month.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(Month) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Revenue =</span> <span class="kw">sum</span>(TotalAmount)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="kw">factor</span>(Month), Revenue)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Revenue per month&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> <span class="cf">function</span>(n) {</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    trans &lt;-<span class="st"> </span>n <span class="op">/</span><span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">    <span class="kw">paste0</span>(trans, <span class="st">&quot;K&quot;</span>)</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">  }) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Month&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>We can then calculate the mean and median order size and amount spent per purchase in the following way.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">orders &lt;-<span class="st"> </span>retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(InvoiceNo) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise</span>(</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">    <span class="dt">mean_order_size =</span> <span class="kw">mean</span>(n),</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">    <span class="dt">median_order_size =</span> <span class="kw">median</span>(n)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">  )</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">amounts &lt;-<span class="st"> </span>retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(InvoiceNo) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">sum =</span> <span class="kw">sum</span>(TotalAmount)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="st">  </span><span class="kw">summarise</span>(</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">    <span class="dt">mean_amount =</span> <span class="kw">mean</span>(sum),</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">    <span class="dt">median_amount =</span> <span class="kw">median</span>(sum)</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">  )</a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="kw">cbind</span>(orders, amounts)</a></code></pre></div>
+<pre><code>##   mean_order_size median_order_size mean_amount median_amount
+## 1        20.92313                10    376.3609       207.535</code></pre>
+<p>We may also want to know whether e.g. order sizes change over time. In this dataset, the per-month distributions look identical.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(Month, InvoiceNo) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Month =</span> <span class="kw">factor</span>(Month, <span class="dt">levels =</span> <span class="kw">rev</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw">filter</span>(n <span class="op">&lt;</span><span class="st"> </span><span class="dv">80</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> n, <span class="dt">y =</span> Month, <span class="dt">fill =</span> ..density..)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_density_ridges_gradient</span>(<span class="dt">rel_min_height =</span> <span class="fl">0.01</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_fill_gradient_tableau</span>(<span class="dt">guide =</span> F) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Order size&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>We can also calculate the revenue per customer to get an idea of how much one customer is worth to the company (in a one-year period).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(CustomerID) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Revenue =</span> <span class="kw">sum</span>(TotalAmount)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">summarise</span>(</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">mean =</span> <span class="kw">mean</span>(Revenue),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">    <span class="dt">median =</span> <span class="kw">median</span>(Revenue)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">  )</a></code></pre></div>
+<pre><code>## # A tibble: 1 x 2
+##    mean median
+##   &lt;dbl&gt;  &lt;dbl&gt;
+## 1 2229.   648.</code></pre>
+<p>Acquiring new customers is important to any business, and we can measure performance in this area by looking at the number of new customers acquired in each month.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(CustomerID) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Min_month =</span> <span class="kw">min</span>(Month)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Min_month =</span> <span class="kw">factor</span>(Min_month, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(Min_month) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(Min_month, n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Month&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;N&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;New Customers&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>In addition, we may want to know the growth rate comparing the percentage of new customers for each month with previous months.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">retail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(CustomerID) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Min_month =</span> <span class="kw">min</span>(Month)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Min_month =</span> <span class="kw">factor</span>(Min_month, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw">count</span>(Min_month) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Growth_Rate =</span> (n <span class="op">-</span><span class="st"> </span><span class="kw">lag</span>(n)) <span class="op">/</span><span class="st"> </span><span class="kw">lag</span>(n) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(Min_month, Growth_Rate)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> <span class="kw">percent_format</span>(<span class="dt">scale =</span> <span class="dv">1</span>, <span class="dt">accuracy =</span> <span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Month&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Growth rate&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="retention-and-cohorts" class="section level2">
+<h2><span class="header-section-number">2.3</span> Retention and cohorts</h2>
+<p>We have just examined the acquisition of new customers over time. Another important aspect of customer valuation is the retention rate, which we’ll measure for customers acquired at different times. These groups are called cohorts.</p>
+<p>We’ll use a large dataset from a mobile game where each “event” is a new player signing up or starting a new game between April 27th and May 27 2016. We then calculate the percentage of players that kept playing the game for each day of the period.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">cohorts &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;Data/game_data.csv&quot;</span>)</a></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-17">Table 2.3: </span>Mobile game data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+userid
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+eventDate
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+eventName
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+44fd19c9677cf444344aa20a401e4c1e6b4a7acff25ec3e760bb4b56cf39264d
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8fc139bff4fb52ae82dbd94117fb93994b2ae4db3e1a5504335e6426913545d6
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+598d1d6f6d157f02b132d718ed97d018d32e65f228f5f343e83f3e0c1d3b3c48
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d00f4d6464017cabd71bc148cdfda00e4e409ce951b5b54b32db5c5a164f7a48
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+14f7dac689689de1c1674e870d6c8f7c8ba9d98d49e5e010ac68dc405b194d1a
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fcd4a1cef58885588e5c0932587fe9472bc0b0994971aa8d8f196908daa77891
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1a44cee016a19840ee61769559c05c8c82306d6736bf55c29944993ac7215340
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d9aa065e05f8e1ab9939a4cea496d39cdbbff4e3b4f4e0239dafdd9549bdf375
+</td>
+<td style="text-align:left;">
+2016-04-27
+</td>
+<td style="text-align:left;">
+newPlayer
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We have 31 days in the data, and we will start by findings the first observation for each player and count the number of active players for each day.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cohorts &lt;-<span class="st"> </span>cohorts <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(userid) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">first =</span> <span class="kw">min</span>(eventDate)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(first, eventDate) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Players =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> eventDate, <span class="dt">values_from =</span> Players) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">first =</span> <span class="kw">as.character</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">n_distinct</span>(first)))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="st">  </span><span class="kw">data.frame</span>()</a></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-19">Table 2.4: </span>Cohorts I
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+first
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.27
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.28
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.29
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.30
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.01
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.02
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.03
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.04
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.05
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.06
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.07
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.08
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.09
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.10
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.11
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.12
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.13
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.14
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.15
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.16
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.17
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.18
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.19
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.20
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.21
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.22
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.23
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.24
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.25
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.26
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.27
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+39795
+</td>
+<td style="text-align:right;">
+33198
+</td>
+<td style="text-align:right;">
+24474
+</td>
+<td style="text-align:right;">
+20315
+</td>
+<td style="text-align:right;">
+18640
+</td>
+<td style="text-align:right;">
+17486
+</td>
+<td style="text-align:right;">
+16007
+</td>
+<td style="text-align:right;">
+14031
+</td>
+<td style="text-align:right;">
+12769
+</td>
+<td style="text-align:right;">
+12141
+</td>
+<td style="text-align:right;">
+11057
+</td>
+<td style="text-align:right;">
+11002
+</td>
+<td style="text-align:right;">
+10885
+</td>
+<td style="text-align:right;">
+10449
+</td>
+<td style="text-align:right;">
+9613
+</td>
+<td style="text-align:right;">
+9503
+</td>
+<td style="text-align:right;">
+9277
+</td>
+<td style="text-align:right;">
+8275
+</td>
+<td style="text-align:right;">
+8573
+</td>
+<td style="text-align:right;">
+8362
+</td>
+<td style="text-align:right;">
+8166
+</td>
+<td style="text-align:right;">
+7847
+</td>
+<td style="text-align:right;">
+7548
+</td>
+<td style="text-align:right;">
+6927
+</td>
+<td style="text-align:right;">
+6400
+</td>
+<td style="text-align:right;">
+6512
+</td>
+<td style="text-align:right;">
+6648
+</td>
+<td style="text-align:right;">
+6523
+</td>
+<td style="text-align:right;">
+7158
+</td>
+<td style="text-align:right;">
+6720
+</td>
+<td style="text-align:right;">
+6153
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+87649
+</td>
+<td style="text-align:right;">
+62050
+</td>
+<td style="text-align:right;">
+43212
+</td>
+<td style="text-align:right;">
+36885
+</td>
+<td style="text-align:right;">
+35122
+</td>
+<td style="text-align:right;">
+30123
+</td>
+<td style="text-align:right;">
+25923
+</td>
+<td style="text-align:right;">
+24357
+</td>
+<td style="text-align:right;">
+23649
+</td>
+<td style="text-align:right;">
+20202
+</td>
+<td style="text-align:right;">
+18667
+</td>
+<td style="text-align:right;">
+18822
+</td>
+<td style="text-align:right;">
+17835
+</td>
+<td style="text-align:right;">
+21225
+</td>
+<td style="text-align:right;">
+20541
+</td>
+<td style="text-align:right;">
+16732
+</td>
+<td style="text-align:right;">
+17032
+</td>
+<td style="text-align:right;">
+15098
+</td>
+<td style="text-align:right;">
+15919
+</td>
+<td style="text-align:right;">
+13186
+</td>
+<td style="text-align:right;">
+13933
+</td>
+<td style="text-align:right;">
+12643
+</td>
+<td style="text-align:right;">
+12308
+</td>
+<td style="text-align:right;">
+13372
+</td>
+<td style="text-align:right;">
+11569
+</td>
+<td style="text-align:right;">
+11693
+</td>
+<td style="text-align:right;">
+10252
+</td>
+<td style="text-align:right;">
+11229
+</td>
+<td style="text-align:right;">
+15382
+</td>
+<td style="text-align:right;">
+9621
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+193942
+</td>
+<td style="text-align:right;">
+119533
+</td>
+<td style="text-align:right;">
+88683
+</td>
+<td style="text-align:right;">
+68869
+</td>
+<td style="text-align:right;">
+60833
+</td>
+<td style="text-align:right;">
+51484
+</td>
+<td style="text-align:right;">
+44784
+</td>
+<td style="text-align:right;">
+43537
+</td>
+<td style="text-align:right;">
+38547
+</td>
+<td style="text-align:right;">
+39972
+</td>
+<td style="text-align:right;">
+33080
+</td>
+<td style="text-align:right;">
+31757
+</td>
+<td style="text-align:right;">
+29581
+</td>
+<td style="text-align:right;">
+30848
+</td>
+<td style="text-align:right;">
+28841
+</td>
+<td style="text-align:right;">
+26360
+</td>
+<td style="text-align:right;">
+26558
+</td>
+<td style="text-align:right;">
+23956
+</td>
+<td style="text-align:right;">
+24042
+</td>
+<td style="text-align:right;">
+24219
+</td>
+<td style="text-align:right;">
+22703
+</td>
+<td style="text-align:right;">
+20085
+</td>
+<td style="text-align:right;">
+20164
+</td>
+<td style="text-align:right;">
+19934
+</td>
+<td style="text-align:right;">
+20383
+</td>
+<td style="text-align:right;">
+19176
+</td>
+<td style="text-align:right;">
+19054
+</td>
+<td style="text-align:right;">
+17735
+</td>
+<td style="text-align:right;">
+16933
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+228748
+</td>
+<td style="text-align:right;">
+145287
+</td>
+<td style="text-align:right;">
+97955
+</td>
+<td style="text-align:right;">
+72147
+</td>
+<td style="text-align:right;">
+63073
+</td>
+<td style="text-align:right;">
+58312
+</td>
+<td style="text-align:right;">
+51348
+</td>
+<td style="text-align:right;">
+49665
+</td>
+<td style="text-align:right;">
+45572
+</td>
+<td style="text-align:right;">
+42299
+</td>
+<td style="text-align:right;">
+36318
+</td>
+<td style="text-align:right;">
+35209
+</td>
+<td style="text-align:right;">
+34365
+</td>
+<td style="text-align:right;">
+34019
+</td>
+<td style="text-align:right;">
+34584
+</td>
+<td style="text-align:right;">
+35736
+</td>
+<td style="text-align:right;">
+27342
+</td>
+<td style="text-align:right;">
+29698
+</td>
+<td style="text-align:right;">
+27576
+</td>
+<td style="text-align:right;">
+24567
+</td>
+<td style="text-align:right;">
+25125
+</td>
+<td style="text-align:right;">
+26887
+</td>
+<td style="text-align:right;">
+26293
+</td>
+<td style="text-align:right;">
+20998
+</td>
+<td style="text-align:right;">
+21462
+</td>
+<td style="text-align:right;">
+20351
+</td>
+<td style="text-align:right;">
+20700
+</td>
+<td style="text-align:right;">
+19789
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+235200
+</td>
+<td style="text-align:right;">
+141720
+</td>
+<td style="text-align:right;">
+94245
+</td>
+<td style="text-align:right;">
+74089
+</td>
+<td style="text-align:right;">
+65052
+</td>
+<td style="text-align:right;">
+60847
+</td>
+<td style="text-align:right;">
+55973
+</td>
+<td style="text-align:right;">
+50902
+</td>
+<td style="text-align:right;">
+45239
+</td>
+<td style="text-align:right;">
+42592
+</td>
+<td style="text-align:right;">
+44384
+</td>
+<td style="text-align:right;">
+38724
+</td>
+<td style="text-align:right;">
+34612
+</td>
+<td style="text-align:right;">
+36641
+</td>
+<td style="text-align:right;">
+34931
+</td>
+<td style="text-align:right;">
+31553
+</td>
+<td style="text-align:right;">
+29910
+</td>
+<td style="text-align:right;">
+28341
+</td>
+<td style="text-align:right;">
+26168
+</td>
+<td style="text-align:right;">
+27112
+</td>
+<td style="text-align:right;">
+27521
+</td>
+<td style="text-align:right;">
+27682
+</td>
+<td style="text-align:right;">
+22954
+</td>
+<td style="text-align:right;">
+23237
+</td>
+<td style="text-align:right;">
+23112
+</td>
+<td style="text-align:right;">
+22708
+</td>
+<td style="text-align:right;">
+21979
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+207924
+</td>
+<td style="text-align:right;">
+116503
+</td>
+<td style="text-align:right;">
+86887
+</td>
+<td style="text-align:right;">
+68433
+</td>
+<td style="text-align:right;">
+57301
+</td>
+<td style="text-align:right;">
+50973
+</td>
+<td style="text-align:right;">
+46334
+</td>
+<td style="text-align:right;">
+43704
+</td>
+<td style="text-align:right;">
+44130
+</td>
+<td style="text-align:right;">
+36908
+</td>
+<td style="text-align:right;">
+38362
+</td>
+<td style="text-align:right;">
+40111
+</td>
+<td style="text-align:right;">
+33372
+</td>
+<td style="text-align:right;">
+31329
+</td>
+<td style="text-align:right;">
+27734
+</td>
+<td style="text-align:right;">
+26603
+</td>
+<td style="text-align:right;">
+26291
+</td>
+<td style="text-align:right;">
+24290
+</td>
+<td style="text-align:right;">
+24233
+</td>
+<td style="text-align:right;">
+23418
+</td>
+<td style="text-align:right;">
+22382
+</td>
+<td style="text-align:right;">
+21501
+</td>
+<td style="text-align:right;">
+20612
+</td>
+<td style="text-align:right;">
+21385
+</td>
+<td style="text-align:right;">
+19861
+</td>
+<td style="text-align:right;">
+19576
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+232965
+</td>
+<td style="text-align:right;">
+104470
+</td>
+<td style="text-align:right;">
+76100
+</td>
+<td style="text-align:right;">
+61468
+</td>
+<td style="text-align:right;">
+52179
+</td>
+<td style="text-align:right;">
+45700
+</td>
+<td style="text-align:right;">
+41519
+</td>
+<td style="text-align:right;">
+39429
+</td>
+<td style="text-align:right;">
+36819
+</td>
+<td style="text-align:right;">
+33470
+</td>
+<td style="text-align:right;">
+31665
+</td>
+<td style="text-align:right;">
+29669
+</td>
+<td style="text-align:right;">
+27588
+</td>
+<td style="text-align:right;">
+26472
+</td>
+<td style="text-align:right;">
+25722
+</td>
+<td style="text-align:right;">
+25752
+</td>
+<td style="text-align:right;">
+23646
+</td>
+<td style="text-align:right;">
+22172
+</td>
+<td style="text-align:right;">
+22033
+</td>
+<td style="text-align:right;">
+20598
+</td>
+<td style="text-align:right;">
+19733
+</td>
+<td style="text-align:right;">
+19322
+</td>
+<td style="text-align:right;">
+19745
+</td>
+<td style="text-align:right;">
+20087
+</td>
+<td style="text-align:right;">
+17400
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+185999
+</td>
+<td style="text-align:right;">
+112720
+</td>
+<td style="text-align:right;">
+78601
+</td>
+<td style="text-align:right;">
+61730
+</td>
+<td style="text-align:right;">
+54094
+</td>
+<td style="text-align:right;">
+47970
+</td>
+<td style="text-align:right;">
+44680
+</td>
+<td style="text-align:right;">
+40154
+</td>
+<td style="text-align:right;">
+38411
+</td>
+<td style="text-align:right;">
+35093
+</td>
+<td style="text-align:right;">
+32177
+</td>
+<td style="text-align:right;">
+31140
+</td>
+<td style="text-align:right;">
+28708
+</td>
+<td style="text-align:right;">
+29254
+</td>
+<td style="text-align:right;">
+26570
+</td>
+<td style="text-align:right;">
+26655
+</td>
+<td style="text-align:right;">
+24394
+</td>
+<td style="text-align:right;">
+23120
+</td>
+<td style="text-align:right;">
+23358
+</td>
+<td style="text-align:right;">
+20890
+</td>
+<td style="text-align:right;">
+21760
+</td>
+<td style="text-align:right;">
+22817
+</td>
+<td style="text-align:right;">
+20764
+</td>
+<td style="text-align:right;">
+20191
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To get the data into the right format for plotting, we need to shift column positions, which we can do in the following way.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">cohorts_shifted &lt;-<span class="st"> </span>cohorts <span class="co"># create new data frame from &#39;cohorts&#39;</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">ncols_total &lt;-<span class="st"> </span><span class="kw">ncol</span>(cohorts_shifted) <span class="co"># count number of columns in data set</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(cohorts_shifted)) { <span class="co"># for loop for shifting each row</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">  row &lt;-<span class="st"> </span>cohorts_shifted[i, ] <span class="co"># select row from data frame</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">  row &lt;-<span class="st"> </span>row[, <span class="op">!</span><span class="kw">is.na</span>(row[])] <span class="co"># remove columns with zeros</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">  ncols &lt;-<span class="st"> </span><span class="kw">ncol</span>(row) <span class="co"># count number of columns in row</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10">  <span class="cf">if</span> (ncols <span class="op">&lt;</span><span class="st"> </span>ncols_total) { <span class="co"># fill columns after values by zeros</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12">    row[, <span class="kw">c</span>((ncols <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>ncols_total)] &lt;-<span class="st"> </span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13">  }</a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15">  cohorts_shifted[i, ] &lt;-<span class="st"> </span>row <span class="co"># replace initial row</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16">}</a></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-21">Table 2.5: </span>Cohorts II
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+first
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.27
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.28
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.29
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.04.30
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.01
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.02
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.03
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.04
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.05
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.06
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.07
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.08
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.09
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.10
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.11
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.12
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.13
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.14
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.15
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.16
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.17
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.18
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.19
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.20
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.21
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.22
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.23
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.24
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.25
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.26
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+X2016.05.27
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+39795
+</td>
+<td style="text-align:right;">
+33198
+</td>
+<td style="text-align:right;">
+24474
+</td>
+<td style="text-align:right;">
+20315
+</td>
+<td style="text-align:right;">
+18640
+</td>
+<td style="text-align:right;">
+17486
+</td>
+<td style="text-align:right;">
+16007
+</td>
+<td style="text-align:right;">
+14031
+</td>
+<td style="text-align:right;">
+12769
+</td>
+<td style="text-align:right;">
+12141
+</td>
+<td style="text-align:right;">
+11057
+</td>
+<td style="text-align:right;">
+11002
+</td>
+<td style="text-align:right;">
+10885
+</td>
+<td style="text-align:right;">
+10449
+</td>
+<td style="text-align:right;">
+9613
+</td>
+<td style="text-align:right;">
+9503
+</td>
+<td style="text-align:right;">
+9277
+</td>
+<td style="text-align:right;">
+8275
+</td>
+<td style="text-align:right;">
+8573
+</td>
+<td style="text-align:right;">
+8362
+</td>
+<td style="text-align:right;">
+8166
+</td>
+<td style="text-align:right;">
+7847
+</td>
+<td style="text-align:right;">
+7548
+</td>
+<td style="text-align:right;">
+6927
+</td>
+<td style="text-align:right;">
+6400
+</td>
+<td style="text-align:right;">
+6512
+</td>
+<td style="text-align:right;">
+6648
+</td>
+<td style="text-align:right;">
+6523
+</td>
+<td style="text-align:right;">
+7158
+</td>
+<td style="text-align:right;">
+6720
+</td>
+<td style="text-align:right;">
+6153
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+87649
+</td>
+<td style="text-align:right;">
+62050
+</td>
+<td style="text-align:right;">
+43212
+</td>
+<td style="text-align:right;">
+36885
+</td>
+<td style="text-align:right;">
+35122
+</td>
+<td style="text-align:right;">
+30123
+</td>
+<td style="text-align:right;">
+25923
+</td>
+<td style="text-align:right;">
+24357
+</td>
+<td style="text-align:right;">
+23649
+</td>
+<td style="text-align:right;">
+20202
+</td>
+<td style="text-align:right;">
+18667
+</td>
+<td style="text-align:right;">
+18822
+</td>
+<td style="text-align:right;">
+17835
+</td>
+<td style="text-align:right;">
+21225
+</td>
+<td style="text-align:right;">
+20541
+</td>
+<td style="text-align:right;">
+16732
+</td>
+<td style="text-align:right;">
+17032
+</td>
+<td style="text-align:right;">
+15098
+</td>
+<td style="text-align:right;">
+15919
+</td>
+<td style="text-align:right;">
+13186
+</td>
+<td style="text-align:right;">
+13933
+</td>
+<td style="text-align:right;">
+12643
+</td>
+<td style="text-align:right;">
+12308
+</td>
+<td style="text-align:right;">
+13372
+</td>
+<td style="text-align:right;">
+11569
+</td>
+<td style="text-align:right;">
+11693
+</td>
+<td style="text-align:right;">
+10252
+</td>
+<td style="text-align:right;">
+11229
+</td>
+<td style="text-align:right;">
+15382
+</td>
+<td style="text-align:right;">
+9621
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+193942
+</td>
+<td style="text-align:right;">
+119533
+</td>
+<td style="text-align:right;">
+88683
+</td>
+<td style="text-align:right;">
+68869
+</td>
+<td style="text-align:right;">
+60833
+</td>
+<td style="text-align:right;">
+51484
+</td>
+<td style="text-align:right;">
+44784
+</td>
+<td style="text-align:right;">
+43537
+</td>
+<td style="text-align:right;">
+38547
+</td>
+<td style="text-align:right;">
+39972
+</td>
+<td style="text-align:right;">
+33080
+</td>
+<td style="text-align:right;">
+31757
+</td>
+<td style="text-align:right;">
+29581
+</td>
+<td style="text-align:right;">
+30848
+</td>
+<td style="text-align:right;">
+28841
+</td>
+<td style="text-align:right;">
+26360
+</td>
+<td style="text-align:right;">
+26558
+</td>
+<td style="text-align:right;">
+23956
+</td>
+<td style="text-align:right;">
+24042
+</td>
+<td style="text-align:right;">
+24219
+</td>
+<td style="text-align:right;">
+22703
+</td>
+<td style="text-align:right;">
+20085
+</td>
+<td style="text-align:right;">
+20164
+</td>
+<td style="text-align:right;">
+19934
+</td>
+<td style="text-align:right;">
+20383
+</td>
+<td style="text-align:right;">
+19176
+</td>
+<td style="text-align:right;">
+19054
+</td>
+<td style="text-align:right;">
+17735
+</td>
+<td style="text-align:right;">
+16933
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+228748
+</td>
+<td style="text-align:right;">
+145287
+</td>
+<td style="text-align:right;">
+97955
+</td>
+<td style="text-align:right;">
+72147
+</td>
+<td style="text-align:right;">
+63073
+</td>
+<td style="text-align:right;">
+58312
+</td>
+<td style="text-align:right;">
+51348
+</td>
+<td style="text-align:right;">
+49665
+</td>
+<td style="text-align:right;">
+45572
+</td>
+<td style="text-align:right;">
+42299
+</td>
+<td style="text-align:right;">
+36318
+</td>
+<td style="text-align:right;">
+35209
+</td>
+<td style="text-align:right;">
+34365
+</td>
+<td style="text-align:right;">
+34019
+</td>
+<td style="text-align:right;">
+34584
+</td>
+<td style="text-align:right;">
+35736
+</td>
+<td style="text-align:right;">
+27342
+</td>
+<td style="text-align:right;">
+29698
+</td>
+<td style="text-align:right;">
+27576
+</td>
+<td style="text-align:right;">
+24567
+</td>
+<td style="text-align:right;">
+25125
+</td>
+<td style="text-align:right;">
+26887
+</td>
+<td style="text-align:right;">
+26293
+</td>
+<td style="text-align:right;">
+20998
+</td>
+<td style="text-align:right;">
+21462
+</td>
+<td style="text-align:right;">
+20351
+</td>
+<td style="text-align:right;">
+20700
+</td>
+<td style="text-align:right;">
+19789
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+235200
+</td>
+<td style="text-align:right;">
+141720
+</td>
+<td style="text-align:right;">
+94245
+</td>
+<td style="text-align:right;">
+74089
+</td>
+<td style="text-align:right;">
+65052
+</td>
+<td style="text-align:right;">
+60847
+</td>
+<td style="text-align:right;">
+55973
+</td>
+<td style="text-align:right;">
+50902
+</td>
+<td style="text-align:right;">
+45239
+</td>
+<td style="text-align:right;">
+42592
+</td>
+<td style="text-align:right;">
+44384
+</td>
+<td style="text-align:right;">
+38724
+</td>
+<td style="text-align:right;">
+34612
+</td>
+<td style="text-align:right;">
+36641
+</td>
+<td style="text-align:right;">
+34931
+</td>
+<td style="text-align:right;">
+31553
+</td>
+<td style="text-align:right;">
+29910
+</td>
+<td style="text-align:right;">
+28341
+</td>
+<td style="text-align:right;">
+26168
+</td>
+<td style="text-align:right;">
+27112
+</td>
+<td style="text-align:right;">
+27521
+</td>
+<td style="text-align:right;">
+27682
+</td>
+<td style="text-align:right;">
+22954
+</td>
+<td style="text-align:right;">
+23237
+</td>
+<td style="text-align:right;">
+23112
+</td>
+<td style="text-align:right;">
+22708
+</td>
+<td style="text-align:right;">
+21979
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:right;">
+207924
+</td>
+<td style="text-align:right;">
+116503
+</td>
+<td style="text-align:right;">
+86887
+</td>
+<td style="text-align:right;">
+68433
+</td>
+<td style="text-align:right;">
+57301
+</td>
+<td style="text-align:right;">
+50973
+</td>
+<td style="text-align:right;">
+46334
+</td>
+<td style="text-align:right;">
+43704
+</td>
+<td style="text-align:right;">
+44130
+</td>
+<td style="text-align:right;">
+36908
+</td>
+<td style="text-align:right;">
+38362
+</td>
+<td style="text-align:right;">
+40111
+</td>
+<td style="text-align:right;">
+33372
+</td>
+<td style="text-align:right;">
+31329
+</td>
+<td style="text-align:right;">
+27734
+</td>
+<td style="text-align:right;">
+26603
+</td>
+<td style="text-align:right;">
+26291
+</td>
+<td style="text-align:right;">
+24290
+</td>
+<td style="text-align:right;">
+24233
+</td>
+<td style="text-align:right;">
+23418
+</td>
+<td style="text-align:right;">
+22382
+</td>
+<td style="text-align:right;">
+21501
+</td>
+<td style="text-align:right;">
+20612
+</td>
+<td style="text-align:right;">
+21385
+</td>
+<td style="text-align:right;">
+19861
+</td>
+<td style="text-align:right;">
+19576
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:right;">
+232965
+</td>
+<td style="text-align:right;">
+104470
+</td>
+<td style="text-align:right;">
+76100
+</td>
+<td style="text-align:right;">
+61468
+</td>
+<td style="text-align:right;">
+52179
+</td>
+<td style="text-align:right;">
+45700
+</td>
+<td style="text-align:right;">
+41519
+</td>
+<td style="text-align:right;">
+39429
+</td>
+<td style="text-align:right;">
+36819
+</td>
+<td style="text-align:right;">
+33470
+</td>
+<td style="text-align:right;">
+31665
+</td>
+<td style="text-align:right;">
+29669
+</td>
+<td style="text-align:right;">
+27588
+</td>
+<td style="text-align:right;">
+26472
+</td>
+<td style="text-align:right;">
+25722
+</td>
+<td style="text-align:right;">
+25752
+</td>
+<td style="text-align:right;">
+23646
+</td>
+<td style="text-align:right;">
+22172
+</td>
+<td style="text-align:right;">
+22033
+</td>
+<td style="text-align:right;">
+20598
+</td>
+<td style="text-align:right;">
+19733
+</td>
+<td style="text-align:right;">
+19322
+</td>
+<td style="text-align:right;">
+19745
+</td>
+<td style="text-align:right;">
+20087
+</td>
+<td style="text-align:right;">
+17400
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:right;">
+185999
+</td>
+<td style="text-align:right;">
+112720
+</td>
+<td style="text-align:right;">
+78601
+</td>
+<td style="text-align:right;">
+61730
+</td>
+<td style="text-align:right;">
+54094
+</td>
+<td style="text-align:right;">
+47970
+</td>
+<td style="text-align:right;">
+44680
+</td>
+<td style="text-align:right;">
+40154
+</td>
+<td style="text-align:right;">
+38411
+</td>
+<td style="text-align:right;">
+35093
+</td>
+<td style="text-align:right;">
+32177
+</td>
+<td style="text-align:right;">
+31140
+</td>
+<td style="text-align:right;">
+28708
+</td>
+<td style="text-align:right;">
+29254
+</td>
+<td style="text-align:right;">
+26570
+</td>
+<td style="text-align:right;">
+26655
+</td>
+<td style="text-align:right;">
+24394
+</td>
+<td style="text-align:right;">
+23120
+</td>
+<td style="text-align:right;">
+23358
+</td>
+<td style="text-align:right;">
+20890
+</td>
+<td style="text-align:right;">
+21760
+</td>
+<td style="text-align:right;">
+22817
+</td>
+<td style="text-align:right;">
+20764
+</td>
+<td style="text-align:right;">
+20191
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Before plotting, we now need to calculate retention rates and transform our data to long format.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># percentages</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">x &lt;-<span class="st"> </span>cohorts_shifted[, <span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(cohorts_shifted))]</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">y &lt;-<span class="st"> </span>cohorts_shifted[, <span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">retention_rates &lt;-<span class="st"> </span><span class="kw">apply</span>(x, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="kw">round</span>(x <span class="op">/</span><span class="st"> </span>y <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span><span class="kw">data.frame</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cohort =</span> <span class="kw">as.character</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(cohorts))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="st">  </span><span class="kw">select</span>(cohort, <span class="kw">everything</span>())</a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="co"># remove last cohort and 1st days</span></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12">retention_rates &lt;-<span class="st"> </span>retention_rates[<span class="op">-</span><span class="kw">nrow</span>(retention_rates), <span class="dv">-2</span>]</a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="kw">names</span>(retention_rates)[<span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(retention_rates)] &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">ncol</span>(retention_rates) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16">retention_rates &lt;-<span class="st"> </span>retention_rates <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="op">-</span>cohort, <span class="dt">names_to =</span> <span class="st">&quot;Day&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;Retention&quot;</span>)</a>
+<a class="sourceLine" id="cb17-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb17-19" data-line-number="19">retention_rates &lt;-<span class="st"> </span>retention_rates <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-20" data-line-number="20"><span class="st">  </span><span class="kw">filter</span>(Retention <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<p>For the sake of clarity, we will only plot the day-to-day retention rates for the first five cohorts.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">retention_rates <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">as.numeric</span>(cohort) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.numeric</span>(Day), <span class="dt">y =</span> Retention, <span class="dt">colour =</span> <span class="kw">factor</span>(cohort), <span class="dt">group =</span> cohort)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="fl">1.5</span>, <span class="dt">alpha =</span> <span class="fl">.7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_colour_tableau</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> <span class="kw">percent_format</span>(<span class="dt">scale =</span> <span class="dv">1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Day&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Retention rate&quot;</span>, <span class="dt">colour =</span> <span class="st">&quot;Cohort&quot;</span>)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Another way of visualizing retention rates for different cohorts is by means of a retention table, which can be easier to inspect when dealing with many cohorts and time periods.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">retention_rates <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.numeric</span>(Day), <span class="dt">y =</span> <span class="kw">reorder</span>(cohort, <span class="kw">desc</span>(<span class="kw">as.numeric</span>(cohort))))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> <span class="kw">log</span>(Retention))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">  </span><span class="kw">coord_equal</span>(<span class="dt">ratio =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> glue<span class="op">::</span><span class="kw">glue</span>(<span class="st">&quot;{round(Retention,0)}%&quot;</span>)), <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">color =</span> <span class="st">&quot;snow&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="st">  </span><span class="kw">theme_light</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">  </span><span class="kw">theme</span>(</a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">    <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>),</a>
+<a class="sourceLine" id="cb19-9" data-line-number="9">    <span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>),</a>
+<a class="sourceLine" id="cb19-10" data-line-number="10">    <span class="dt">panel.grid =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">    <span class="dt">panel.border =</span> <span class="kw">element_blank</span>()</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12">  ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Day&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Cohort&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Retention table&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_fill_gradient_tableau</span>(<span class="dt">guide =</span> F)</a></code></pre></div>
+<p><img src="Customer_analytics_bookdown_files/figure-html/unnamed-chunk-24-1.png" width="864" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="market-basket-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Customer_analytics_bookdown.pdf", "Customer_analytics_bookdown.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
